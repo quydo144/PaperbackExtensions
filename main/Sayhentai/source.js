@@ -14990,7 +14990,7 @@ var _Sources = (() => {
         const latestChapter = el.find(".chapter-item .chapter a").first().text().trim();
         const image = el.find("img.img-responsive").attr("data-src") || el.find("img.img-responsive").attr("src") || "";
         const mangaUrl = el.find(".post-title h3 a").attr("href") || "";
-        const mangaId = mangaUrl ? mangaUrl.split("/").filter(Boolean).pop() : "";
+        const mangaId = mangaUrl ? mangaUrl.split("/").filter(Boolean).pop()?.replace(/\.html$/, "") || "" : "";
         if (mangaId && !seen.has(mangaId)) {
           seen.add(mangaId);
           items.push(
@@ -15028,7 +15028,7 @@ var _Sources = (() => {
         const title = el.find(".post-title h3 a").text().trim();
         const image = el.find("img.img-responsive").attr("data-src") || el.find("img.img-responsive").attr("src") || "";
         const mangaUrl = el.find(".post-title h3 a").attr("href") || "";
-        const mangaId = mangaUrl ? mangaUrl.split("/").filter(Boolean).pop() : "";
+        const mangaId = mangaUrl ? mangaUrl.split("/").filter(Boolean).pop()?.replace(/\.html$/, "") || "" : "";
         if (!mangaId || seenIds.has(mangaId)) return;
         seenIds.add(mangaId);
         collectedIds.push(mangaId);
@@ -15045,7 +15045,7 @@ var _Sources = (() => {
     }
     async getMangaDetails(mangaId) {
       const response = await this.requestManager.schedule(App.createRequest({
-        url: `${BASE_URL}/${mangaId}`,
+        url: `${BASE_URL}/${mangaId}.html`,
         method: "GET"
       }), 1);
       const $2 = load(response.data);
@@ -15069,7 +15069,7 @@ var _Sources = (() => {
     }
     async getChapters(mangaId) {
       const response = await this.requestManager.schedule(App.createRequest({
-        url: `${BASE_URL}/${mangaId}`,
+        url: `${BASE_URL}/${mangaId}.html`,
         method: "GET"
       }), 1);
       const $2 = load(response.data);
