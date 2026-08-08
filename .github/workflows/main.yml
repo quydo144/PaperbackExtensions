@@ -4,6 +4,15 @@ on:
     branches:
       - '**'
       - '!main'
+      - '!gh-pages'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: true
+  
 jobs:
   build:
     name: Bundle and Publish Sources
@@ -21,10 +30,6 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ matrix.node-version }}
-      
-      - name: Extract branch name
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-        id: extract_branch
 
       - name: Checkout existing bundles
         uses: actions/checkout@v4.1.4
@@ -34,7 +39,7 @@ jobs:
           path: bundles
 
       - run: npm ci
-      - run: npm run bundle -- --folder=${{ steps.extract_branch.outputs.branch }}
+      - run: npm run bundle -- --folder=${{ github.ref_name }}
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.6.0
