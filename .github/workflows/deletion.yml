@@ -22,16 +22,17 @@ jobs:
           echo "Clean up for branch ${{ inputs.target_branch }}"
 
       - name: Checkout Branch
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v5
 
       - name: Checkout existing bundles
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v5
         continue-on-error: true
         with:
           ref: gh-pages
           path: bundles
 
-      - run: rm -rf "bundles/${{ inputs.target_branch }}"
+      - name: Remove branch folder
+        run: rm -rf "bundles/${{ inputs.target_branch }}"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.6.0
