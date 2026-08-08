@@ -1,6 +1,11 @@
 name: Clean up published sources for deleted branch
-on: 
-  delete:
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: Branch folder to remove from bundles
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -10,12 +15,11 @@ concurrency:
   cancel-in-progress: true
 jobs:
   delete:
-    if: github.event.ref_type == 'branch' && github.event.ref != 'main' && github.event.ref != 'gh-pages'
     runs-on: ubuntu-latest
     steps:
       - name: Clean up
         run: |
-          echo "Clean up for branch ${{ github.event.ref }}"
+          echo "Clean up for branch ${{ inputs.target_branch }}"
 
       - name: Checkout Branch
         uses: actions/checkout@v4.1.4
@@ -27,7 +31,7 @@ jobs:
           ref: gh-pages
           path: bundles
 
-      - run: rm -rf "bundles/${{ github.event.ref }}"
+      - run: rm -rf "bundles/${{ inputs.target_branch }}"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.6.0

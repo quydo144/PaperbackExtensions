@@ -1,10 +1,6 @@
 name: Bundle and Publish Sources
-on: 
-  push:
-    branches:
-      - '**'
-      - '!main'
-      - '!gh-pages'
+on:
+  workflow_dispatch:
 
 permissions:
   contents: write
