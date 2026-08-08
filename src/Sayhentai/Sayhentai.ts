@@ -31,7 +31,7 @@ export const SayhentaiInfo: SourceInfo = {
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",
-    contentRating: ContentRating.ADULT,
+    contentRating: ContentRating.EVERYONE,
     websiteBaseURL: BASE_URL,
     intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
     sourceTags: [{ text: "Raw", type: BadgeColor.RED } as Badge],
