@@ -14894,7 +14894,7 @@ var _Sources = (() => {
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",
-    contentRating: import_types2.ContentRating.ADULT,
+    contentRating: import_types2.ContentRating.EVERYONE,
     websiteBaseURL: BASE_URL,
     intents: import_types2.SourceIntents.MANGA_CHAPTERS | import_types2.SourceIntents.HOMEPAGE_SECTIONS,
     sourceTags: [{ text: "Raw", type: import_types2.BadgeColor.RED }]
