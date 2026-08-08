@@ -137,8 +137,8 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
             const latestChapter = el.find(".chapter-item .chapter a").first().text().trim();
             const image = el.find("img.img-responsive").attr("data-src") || el.find("img.img-responsive").attr("src") || ""
 
-            const mangaUrl = el.find(".post-title h3 a").attr("href") || "";
-            const mangaId = mangaUrl ? mangaUrl.split('/').filter(Boolean).pop() : "";
+            const mangaUrl: string = el.find(".post-title h3 a").attr("href") || "";
+            const mangaId: string = mangaUrl ? mangaUrl.split('/').filter(Boolean).pop()?.replace(/\.html$/, '') || "" : "";
 
             if (mangaId && !seen.has(mangaId)) {
                 seen.add(mangaId);
@@ -186,8 +186,8 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
 
             const image = el.find("img.img-responsive").attr("data-src") || el.find("img.img-responsive").attr("src") || ""
 
-            const mangaUrl = el.find(".post-title h3 a").attr("href") || "";
-            const mangaId = mangaUrl ? mangaUrl.split('/').filter(Boolean).pop() : "";
+            const mangaUrl: string = el.find(".post-title h3 a").attr("href") || "";
+            const mangaId: string = mangaUrl ? mangaUrl.split('/').filter(Boolean).pop()?.replace(/\.html$/, '') || "" : "";
 
             if (!mangaId || seenIds.has(mangaId)) return;
             seenIds.add(mangaId);
@@ -208,7 +208,7 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
 
     async getMangaDetails(mangaId: string): Promise<SourceManga> {
         const response = await this.requestManager.schedule(App.createRequest({
-            url: `${BASE_URL}/${mangaId}`,
+            url: `${BASE_URL}/${mangaId}.html`,
             method: "GET"
         }), 1);
         const $ = cheerio.load(response.data as string);
@@ -235,7 +235,7 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
         const response = await this.requestManager.schedule(App.createRequest({
-            url: `${BASE_URL}/${mangaId}`,
+            url: `${BASE_URL}/${mangaId}.html`,
             method: "GET"
         }), 1);
         const $ = cheerio.load(response.data as string);
