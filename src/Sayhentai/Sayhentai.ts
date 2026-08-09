@@ -1,5 +1,4 @@
 import {
-    Badge,
     BadgeColor,
     Chapter,
     ChapterDetails,
@@ -31,10 +30,15 @@ export const SayhentaiInfo: SourceInfo = {
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",
-    contentRating: ContentRating.EVERYONE,
+    contentRating: ContentRating.ADULT,
     websiteBaseURL: BASE_URL,
-    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS,
-    sourceTags: [{ text: "Raw", type: BadgeColor.RED } as Badge],
+    intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS | SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
+    sourceTags: [
+        {
+            text: '18+',
+            type: BadgeColor.YELLOW
+        }
+    ]
 };
 
 export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, MangaProviding, SearchResultsProviding {
@@ -223,11 +227,10 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
             mangaInfo: App.createMangaInfo({
                 titles: [title],
                 image: image,
-                banner: image,
                 author: 'N/A',
+                artist: 'N/A',
                 desc: description,
                 status: 'N/A',
-                hentai: true,
                 tags: []
             }),
         });
@@ -261,7 +264,7 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
             );
         });
 
-        return chapters.sort((a, b) => a.chapNum - b.chapNum);
+        return chapters;
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {

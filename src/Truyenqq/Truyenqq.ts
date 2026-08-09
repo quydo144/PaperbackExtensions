@@ -225,7 +225,6 @@ export class Truyenqq implements ChapterProviding, HomePageSectionsProviding, Ma
             mangaInfo: App.createMangaInfo({
                 titles: [title],
                 image: image,
-                banner: image,
                 author: publisher,
                 desc: description,
                 status: status,
@@ -273,7 +272,7 @@ export class Truyenqq implements ChapterProviding, HomePageSectionsProviding, Ma
             );
         });
 
-        return chapters.sort((a, b) => a.chapNum - b.chapNum);
+        return chapters;
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
