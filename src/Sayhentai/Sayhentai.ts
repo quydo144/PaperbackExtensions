@@ -251,8 +251,8 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
             if (!href) return;
 
             const chapterTitle = el.find('a').text().trim();
-            const chapNumMatch = chapterTitle.match(/(?:chương|chapter)?\s*([\d.]+)/i);
-            const chapNum = chapNumMatch && chapNumMatch[1] ? parseFloat(chapNumMatch[1]) : 0;
+            const chapNumMatch = chapterTitle.match(/\d+(?:\.\d+)?/);
+            const chapNum = chapNumMatch ? parseFloat(chapNumMatch[0]) : 0;
             const chapterId = href.replace(/\/$/, "").split("/").pop() ?? "";
 
             chapters.push(
