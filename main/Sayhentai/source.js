@@ -14894,10 +14894,15 @@ var _Sources = (() => {
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",
-    contentRating: import_types2.ContentRating.EVERYONE,
+    contentRating: import_types2.ContentRating.ADULT,
     websiteBaseURL: BASE_URL,
-    intents: import_types2.SourceIntents.MANGA_CHAPTERS | import_types2.SourceIntents.HOMEPAGE_SECTIONS,
-    sourceTags: [{ text: "Raw", type: import_types2.BadgeColor.RED }]
+    intents: import_types2.SourceIntents.MANGA_CHAPTERS | import_types2.SourceIntents.HOMEPAGE_SECTIONS | import_types2.SourceIntents.CLOUDFLARE_BYPASS_REQUIRED,
+    sourceTags: [
+      {
+        text: "18+",
+        type: import_types2.BadgeColor.YELLOW
+      }
+    ]
   };
   var Sayhentai = class {
     constructor() {
@@ -15058,11 +15063,10 @@ var _Sources = (() => {
         mangaInfo: App.createMangaInfo({
           titles: [title],
           image,
-          banner: image,
           author: "N/A",
+          artist: "N/A",
           desc: description,
           status: "N/A",
-          hentai: true,
           tags: []
         })
       });
@@ -15090,7 +15094,7 @@ var _Sources = (() => {
           })
         );
       });
-      return chapters.sort((a, b) => a.chapNum - b.chapNum);
+      return chapters;
     }
     async getChapterDetails(mangaId, chapterId) {
       const cleanMangaId = mangaId.replace(/\.html$/, "");

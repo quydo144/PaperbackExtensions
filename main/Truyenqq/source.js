@@ -15061,7 +15061,6 @@ var _Sources = (() => {
         mangaInfo: App.createMangaInfo({
           titles: [title],
           image,
-          banner: image,
           author: publisher,
           desc: description,
           status,
@@ -15102,7 +15101,7 @@ var _Sources = (() => {
           })
         );
       });
-      return chapters.sort((a, b) => a.chapNum - b.chapNum);
+      return chapters;
     }
     async getChapterDetails(mangaId, chapterId) {
       const response = await this.requestManager.schedule(
