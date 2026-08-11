@@ -249,14 +249,15 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
         const firstChapterId = firstHref.replace(/\/$/, "").split("/").pop() ?? "";
         if (!firstChapterId) return [];
 
+        const cleanMangaId = mangaId.replace(/\.html$/, "");
         const responseChaptersList = await this.requestManager.schedule(App.createRequest({
-            url: `${BASE_URL}/${mangaId}/${firstChapterId}`,
-            method: "GET"
+            url: `${BASE_URL}/${cleanMangaId}/${firstChapterId}`,
+            method: "GET",
         }), 1);
-        const $chaptersList = cheerio.load(responseChaptersList.data as string);
 
         const chapters: Chapter[] = [];
-        $chaptersList('#manga-reading-nav-head div .selectpicker_chapter select option').each((_, element) => {
+        const $chaptersList = cheerio.load(responseChaptersList.data as string);
+        $chaptersList('#manga-reading-nav-foot div .selectpicker_chapter select option').each((_, element) => {
             const el = $chaptersList(element);
             const dataRedirect = el.attr("data-redirect") || "";
             if (!dataRedirect) return;
