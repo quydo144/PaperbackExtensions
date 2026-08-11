@@ -15081,13 +15081,14 @@ var _Sources = (() => {
       if (!firstHref) return [];
       const firstChapterId = firstHref.replace(/\/$/, "").split("/").pop() ?? "";
       if (!firstChapterId) return [];
+      const cleanMangaId = mangaId.replace(/\.html$/, "");
       const responseChaptersList = await this.requestManager.schedule(App.createRequest({
-        url: `${BASE_URL}/${mangaId}/${firstChapterId}`,
+        url: `${BASE_URL}/${cleanMangaId}/${firstChapterId}`,
         method: "GET"
       }), 1);
-      const $chaptersList = load(responseChaptersList.data);
       const chapters = [];
-      $chaptersList("#manga-reading-nav-head div .selectpicker_chapter select option").each((_, element) => {
+      const $chaptersList = load(responseChaptersList.data);
+      $chaptersList("#manga-reading-nav-foot div .selectpicker_chapter select option").each((_, element) => {
         const el = $chaptersList(element);
         const dataRedirect = el.attr("data-redirect") || "";
         if (!dataRedirect) return;
