@@ -237,25 +237,36 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
     }
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
-        const response = await this.requestManager.schedule(App.createRequest({
+        const responseChaptersDetail = await this.requestManager.schedule(App.createRequest({
             url: `${BASE_URL}/${mangaId}.html`,
             method: "GET"
         }), 1);
-        const $ = cheerio.load(response.data as string);
+        const $chaptersDetail = cheerio.load(responseChaptersDetail.data as string);
+
+        const firstHref = $chaptersDetail('ul.box-list-chapter li a[href]').first().attr('href') || "";
+        if (!firstHref) return [];
+
+        const firstChapterId = firstHref.replace(/\/$/, "").split("/").pop() ?? "";
+        if (!firstChapterId) return [];
+
+        const responseChaptersList = await this.requestManager.schedule(App.createRequest({
+            url: `${BASE_URL}/${mangaId}/${firstChapterId}`,
+            method: "GET"
+        }), 1);
+        const $chaptersList = cheerio.load(responseChaptersList.data as string);
 
         const chapters: Chapter[] = [];
+        $chaptersList('#manga-reading-nav-head div .selectpicker_chapter select option').each((_, element) => {
+            const el = $chaptersList(element);
+            const dataRedirect = el.attr("data-redirect") || "";
+            if (!dataRedirect) return;
 
-        const $items = $('ul.box-list-chapter li');
-        const totalChapters = $items.length;
+            const chapterTitle = el.text().trim();
+            const optionValue = String(el.val() || el.attr("value") || "");
+            const chapNumMatch = optionValue.match(/\d+(?:\.\d+)?/);
+            const chapNum = chapNumMatch ? parseFloat(chapNumMatch[0]) : 0;
 
-        $items.each((index, element) => {
-            const el = $(element);
-            const href = el.find('a').attr("href") || "";
-            if (!href) return;
-
-            const chapterTitle = el.find('a').text().trim();
-            const chapNum = totalChapters - index;
-            const chapterId = href.replace(/\/$/, "").split("/").pop() ?? "";
+            const chapterId = dataRedirect.replace(/\/$/, "").split("/").pop() ?? "";
 
             chapters.push(
                 App.createChapter({
