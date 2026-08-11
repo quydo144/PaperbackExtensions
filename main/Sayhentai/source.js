@@ -15072,20 +15072,30 @@ var _Sources = (() => {
       });
     }
     async getChapters(mangaId) {
-      const response = await this.requestManager.schedule(App.createRequest({
+      const responseChaptersDetail = await this.requestManager.schedule(App.createRequest({
         url: `${BASE_URL}/${mangaId}.html`,
         method: "GET"
       }), 1);
-      const $2 = load(response.data);
+      const $chaptersDetail = load(responseChaptersDetail.data);
+      const firstHref = $chaptersDetail("ul.box-list-chapter li a[href]").first().attr("href") || "";
+      if (!firstHref) return [];
+      const firstChapterId = firstHref.replace(/\/$/, "").split("/").pop() ?? "";
+      if (!firstChapterId) return [];
+      const responseChaptersList = await this.requestManager.schedule(App.createRequest({
+        url: `${BASE_URL}/${mangaId}/${firstChapterId}`,
+        method: "GET"
+      }), 1);
+      const $chaptersList = load(responseChaptersList.data);
       const chapters = [];
-      $2("ul.box-list-chapter li").each((_, element) => {
-        const el = $2(element);
-        const href = el.find("a").attr("href") || "";
-        if (!href) return;
-        const chapterTitle = el.find("a").text().trim();
-        const chapNumMatch = chapterTitle.match(/\d+(?:\.\d+)?/);
+      $chaptersList("#manga-reading-nav-head div .selectpicker_chapter select option").each((_, element) => {
+        const el = $chaptersList(element);
+        const dataRedirect = el.attr("data-redirect") || "";
+        if (!dataRedirect) return;
+        const chapterTitle = el.text().trim();
+        const optionValue = String(el.val() || el.attr("value") || "");
+        const chapNumMatch = optionValue.match(/\d+(?:\.\d+)?/);
         const chapNum = chapNumMatch ? parseFloat(chapNumMatch[0]) : 0;
-        const chapterId = href.replace(/\/$/, "").split("/").pop() ?? "";
+        const chapterId = dataRedirect.replace(/\/$/, "").split("/").pop() ?? "";
         chapters.push(
           App.createChapter({
             id: chapterId,
