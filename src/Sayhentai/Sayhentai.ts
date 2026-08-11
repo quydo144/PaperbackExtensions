@@ -245,14 +245,16 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
 
         const chapters: Chapter[] = [];
 
-        $('ul.box-list-chapter li').each((_, element) => {
+        const $items = $('ul.box-list-chapter li');
+        const totalChapters = $items.length;
+
+        $items.each((index, element) => {
             const el = $(element);
             const href = el.find('a').attr("href") || "";
             if (!href) return;
 
             const chapterTitle = el.find('a').text().trim();
-            const chapNumMatch = chapterTitle.match(/\d+(?:\.\d+)?/);
-            const chapNum = chapNumMatch ? parseFloat(chapNumMatch[0]) : 0;
+            const chapNum = totalChapters - index;
             const chapterId = href.replace(/\/$/, "").split("/").pop() ?? "";
 
             chapters.push(
