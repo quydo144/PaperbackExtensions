@@ -25,7 +25,7 @@ import { SayHentaiMetadata } from "./model";
 const BASE_URL = "https://sayhentai.cx";
 
 export const SayhentaiInfo: SourceInfo = {
-    version: "1.0",
+    version: "1.1",
     name: "Say Hentai",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
@@ -167,11 +167,6 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
         });
     }
 
-    private delay(minMs: number, maxMs?: number): Promise<void> {
-        const ms = maxMs ? Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs : minMs;
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
     async getSearchResults(query: SearchRequest, metadata: SayHentaiMetadata | undefined): Promise<PagedResults> {
         const collectedIds: string[] = metadata?.collectedIds ?? [];
         const page: number = metadata?.page ?? 1;
@@ -180,8 +175,6 @@ export class Sayhentai implements ChapterProviding, HomePageSectionsProviding, M
         if (!searchTerm.trim()) {
             return App.createPagedResults({ results: [] });
         }
-
-        await this.delay(500, 1000);
 
         const response = await this.requestManager.schedule(
             App.createRequest({

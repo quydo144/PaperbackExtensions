@@ -26,8 +26,8 @@ import { TruyenQQMetadata } from "./model";
 const BASE_URL = "https://truyenqqko.com";
 
 export const TruyenqqInfo: SourceInfo = {
-    version: "1.0",
-    name: "Truyen QQ",
+    version: "1.1",
+    name: "Truyện QQ",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",
