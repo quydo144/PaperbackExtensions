@@ -14889,8 +14889,8 @@ var _Sources = (() => {
   // src/Truyenqq/Truyenqq.ts
   var BASE_URL = "https://truyenqqko.com";
   var TruyenqqInfo = {
-    version: "1.0",
-    name: "Truyen QQ",
+    version: "1.1",
+    name: "Truy\u1EC7n QQ",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
     icon: "icon.png",

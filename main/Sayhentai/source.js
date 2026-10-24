@@ -14889,7 +14889,7 @@ var _Sources = (() => {
   // src/Sayhentai/Sayhentai.ts
   var BASE_URL = "https://sayhentai.cx";
   var SayhentaiInfo = {
-    version: "1.0",
+    version: "1.1",
     name: "Say Hentai",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
@@ -15018,6 +15018,9 @@ var _Sources = (() => {
       const collectedIds = metadata?.collectedIds ?? [];
       const page = metadata?.page ?? 1;
       const searchTerm = query.title ?? "";
+      if (!searchTerm.trim()) {
+        return App.createPagedResults({ results: [] });
+      }
       const response = await this.requestManager.schedule(
         App.createRequest({
           url: `${BASE_URL}/search?q=${encodeURIComponent(searchTerm)}&page=${page}`,
