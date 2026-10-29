@@ -25,10 +25,10 @@ import type { AnyNode } from "domhandler";
 import { loadEncryptedPages } from "./encryptedPageLoader";
 import { DamCoNuongMetadata } from "./model";
 
-const BASE_URL = "https://damconuong.win";
+const BASE_URL = "https://damconuong.icu";
 
 export const DamconuongInfo: SourceInfo = {
-    version: "1.0",
+    version: "1.1",
     name: "Dâm Cô Nương",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
