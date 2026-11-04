@@ -16008,9 +16008,9 @@ var _Sources = (() => {
   }
 
   // src/Damconuong/Damconuong.ts
-  var BASE_URL = "https://damconuong.icu";
+  var BASE_URL = "https://damconuong.cool";
   var DamconuongInfo = {
-    version: "1.1",
+    version: "1.2",
     name: "D\xE2m C\xF4 N\u01B0\u01A1ng",
     description: `Extension that pulls content from ${BASE_URL}`,
     author: "Kizias",
